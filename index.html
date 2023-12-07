@@ -9,16 +9,19 @@
     <button onclick="sendMessage()">Send Message</button>
   </body>
   <script>
+    const user = 'user123'; 
     const socket = new WebSocket("ws://localhost:8081");
     socket.addEventListener("open", function (event) {
+      socket.send(JSON.stringify({ user, content: 'Hello Server!' }));
       console.log("connected to WS server");
     });
     socket.addEventListener("message", function (event) {
-      console.log("connected to WS server", event.data);
+      const data = JSON.parse(event.data);
+      console.log(`Received from ${data.user}: ${data.content}`);
     });
 
     const sendMessage = () => {
-      socket.send("Hello from client");
+      socket.send(JSON.stringify({ user, content: 'Hello Server!' }));
     };
   </script>
 </html>
